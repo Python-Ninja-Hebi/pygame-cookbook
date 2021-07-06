@@ -70,7 +70,7 @@ At least close the pygame window.
 pygame.quit() #stop the pygame module
 ```
 
-<img src="img/jupyter_pygame.png" width="280" align="left"><br><br><br><br><br>
+<img src="img/jupyter_pygame.png" width="280" align="left"><br><br><br><br><br><br><br>
 
 **Explanation:**
 
