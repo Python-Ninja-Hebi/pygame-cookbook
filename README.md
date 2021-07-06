@@ -70,7 +70,7 @@ At least close the pygame window.
 pygame.quit() #stop the pygame module
 ```
 
-<img src="img/jupyter_pygame.png" width="280" align="left">
+<img src="img/jupyter_pygame.png" width="280" align="left"><br><br><br><br><br>
 
 **Explanation:**
 
@@ -131,7 +131,7 @@ pygame.quit()
     Hello from the pygame community. https://www.pygame.org/contribute.html
 
 
-<img src="img/simple_gameloop.png" width="280" align="left">
+<img src="img/simple_gameloop.png" width="280" align="left"><br><br><br><br><br>
 
 **Explanation:**
 
