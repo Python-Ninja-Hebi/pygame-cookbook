@@ -18,7 +18,7 @@ Have fun.
 
 Hebi, on the way to Python Ninja
 
-`Edition 0.1, July 2021`
+`Edition 0.2, August 2021`
 
 ## install pygame
 
@@ -256,19 +256,161 @@ The parameter *FRAMES_PER_SECOND* defines the maximal number of frames per secon
  
 `if x_position > WIDTH: x_position = 0`.. before the rectangel is vanishing from the screen you have to start from the left side again
 
+## basics
+
+#### coordinates
+
 
 ```python
 
 ```
+
+#### colors <a id='colors'></a>
+
+
+```python
+
+```
+
+#### Rect <a id='Rect'></a>
+
+
+```python
+
+```
+
+<img src="img/rect.png" width="320" align="left"><br><br><br><br><br><br><br><br><br><br>
 
 ## draw
 
+### rectangle
+
+#### Task: drawing a rectangle
+
+**Solution:**
+
+
+```python
+%gui qt
+import pygame
+
+pygame.init()
+
+SIZE = WIDTH, HEIGHT = 320, 240
+BLACK = 0, 0, 0
+BLUE = 0, 0, 255
+running = True
+screen = pygame.display.set_mode(SIZE)
+
+while running:
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            running = False
+            
+    screen.fill(pygame.Color('black'))
+    pygame.draw.rect(screen, pygame.Color('blue'), pygame.Rect(30, 30, 60, 60))
+    pygame.display.flip()
+
+pygame.quit()
+```
+
+
+```python
+%gui qt
+import pygame
+
+# ---- Initialize ----
+
+pygame.init()
+
+SIZE = WIDTH, HEIGHT = 320, 120
+
+running = True
+screen = pygame.display.set_mode(SIZE)
+
+# ---- Game loop ----
+
+while running:
+    
+    # ---- input ----
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            running = False
+    
+    # ---- update ---- 
+    
+    # ---- draw ----
+    screen.fill(BLACK)
+    
+    pygame.draw.rect(screen, pygame.Color('blue'), pygame.Rect(30, 30, 60, 60)) #fill area
+    
+    pygame.draw.rect(screen, pygame.Color('blue'), pygame.Rect(120, 30, 60, 60), width=1) #border
+    
+    pygame.draw.rect(screen, pygame.Color('blue'), pygame.Rect(210, 30, 60, 60), width=2, border_radius=8) #rounded border
+    
+    pygame.display.flip()
+
+# ---- Quit ----
+
+pygame.quit()
+```
+
+<img src="img/draw_rectangle.png" width="560" align="left"><br><br><br><br><br><br><br><br><br><br>
+
+**Explanation:**
+
+A rectangle can consist of a fill area and a border.
+
+**Drawing the fill area with function rect**
+
+`rect(surface, color, rect) -> Rec` .. draws a rectangle to the output surface and returns an object of the class **Rect**  
+
+`surface`.. Surface to draw on
+
+`color` .. different ways to describe a [color](#colors) in **Pygame**
+
+`rec` .. rectangle that describes position, width and height
+
+With
+
+`Rect(left, top, width, height) -> Rect` .. you can create a new [Rect](#Rect) from position (left, top) and dimension (width, height)
+
+**Drawing the border with function rect**
+
+`rect(surface, color, rect, width=0, border_radius=0) -> Rect` .. draws the border of a rectangle to the output surface and returns an object of the class **Rect**
+
+`width`.. thickness of the border in Pixel. (if is 0, **Pygame** draws a filled rectangle)
+
+`border_radius`.. draws border with rounded corners (if is 0, no rounded corners)
+
+
+**more**  
+* Pygame documentation http://www.pygame.org/docs/ref/draw.html
+
+### polygon, circle, ellipse, arc 
+
 
 ```python
 
 ```
 
-## rectangle
+### line
+
+
+```python
+
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
 
 
 ```python
