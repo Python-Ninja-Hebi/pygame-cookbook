@@ -18,7 +18,7 @@ Have fun.
 
 Hebi, on the way to Python Ninja
 
-`Edition 0.2, August 2021`
+`Edition 0.3, February 2023`
 
 ## install pygame
 
@@ -126,10 +126,6 @@ while running:
 
 pygame.quit()
 ```
-
-    pygame 2.0.1 (SDL 2.0.14, Python 3.8.8)
-    Hello from the pygame community. https://www.pygame.org/contribute.html
-
 
 <img src="img/simple_gameloop.png" width="280" align="left"><br><br><br><br><br><br><br><br><br><br>
 
@@ -297,8 +293,6 @@ import pygame
 pygame.init()
 
 SIZE = WIDTH, HEIGHT = 320, 240
-BLACK = 0, 0, 0
-BLUE = 0, 0, 255
 running = True
 screen = pygame.display.set_mode(SIZE)
 
@@ -425,11 +419,453 @@ With
 
 ## mouse
 
+#### Task: drag with the mouse
+
+**Solution:**
+
+
+```python
+%gui qt
+import pygame
+
+# ---- Initialize ----
+
+pygame.init()
+
+SIZE = WIDTH, HEIGHT = 320, 240
+BLACK = 0, 0, 0
+BLUE = 0, 0, 255
+
+running = True
+screen = pygame.display.set_mode(SIZE)
+
+rectangle = pygame.rect.Rect(176, 134, 80, 80)
+draging = False
+
+pygame.mouse.set_visible(True)
+
+# ---- Game loop ----
+
+while running:
+    
+    # ---- input ----
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            running = False
+            
+        elif event.type == pygame.MOUSEBUTTONDOWN:           
+            if rectangle.collidepoint(event.pos):
+                draging = True
+                mouse_x, mouse_y = event.pos
+                offset_x = rectangle.x - mouse_x
+                offset_y = rectangle.y - mouse_y
+
+        elif event.type == pygame.MOUSEBUTTONUP:          
+            draging = False
+
+        elif event.type == pygame.MOUSEMOTION:
+            if draging:
+                mouse_x, mouse_y = event.pos
+                rectangle.x = mouse_x + offset_x
+                rectangle.y = mouse_y + offset_y
+    
+    # ---- update ---- 
+    
+    # ---- draw ----
+    screen.fill(BLACK)
+    pygame.draw.rect(screen, BLUE, rectangle) #draw a rectangle
+    pygame.display.flip()
+
+# ---- Quit ----
+
+pygame.quit()
+```
+
+
+```python
+
+```
+
+
+```python
+
+```
+
 ## keyboard
+
+#### Task: get every pressed key
+
+**Solution:**
+
+
+```python
+%gui qt
+import pygame
+
+running = True
+
+WHITE = (255,255,255)
+BLUE = (0,0,255)
+GREEN = (0,255,0)
+
+screen = pygame.display.set_mode((640, 340))
+
+rectangle = pygame.rect.Rect(200, 150, 40, 40)
+rect_color = BLUE
+
+while running:
+
+    right_color = GREEN
+    left_color = GREEN
+    up_color = GREEN
+    down_color = GREEN
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            running = False
+            
+    keys=pygame.key.get_pressed()
+    
+    if keys[pygame.K_RIGHT]:
+        right_color = BLUE
+        
+    if keys[pygame.K_LEFT]:
+        left_color = BLUE
+        
+    if keys[pygame.K_UP]:
+        up_color = BLUE
+        
+    if keys[pygame.K_DOWN]:
+        down_color = BLUE
+    
+    screen.fill(WHITE)
+    
+    pygame.draw.rect(screen, right_color, (200, 100, 100, 100))
+    pygame.draw.rect(screen, left_color, (0, 100, 100, 100))
+    pygame.draw.rect(screen, up_color, (100, 0, 100, 100))
+    pygame.draw.rect(screen, down_color, (100, 200, 100, 100))
+    
+    pygame.display.flip()
+
+pygame.quit()
+```
+
+    pygame 2.1.2 (SDL 2.0.18, Python 3.9.16)
+    Hello from the pygame community. https://www.pygame.org/contribute.html
+
+
+`get_pressed() -> bools` .. get a boolean value for every key on the keybaord. Is *True* if key is pressed.
 
 ## events
 
 ## collision
+
+### point - rectangle
+
+#### Task: detecting a point in a rectangle
+
+**Solution:**
+
+
+```python
+%gui qt
+import pygame
+
+# ---- Initialize ----
+
+pygame.init()
+
+SIZE = WIDTH, HEIGHT = 320, 240
+WHITE =  255, 255 ,255
+BLUE = 0, 0, 255
+GREEN = 0, 255, 0
+
+running = True
+screen = pygame.display.set_mode(SIZE)
+
+rectangle = pygame.rect.Rect(50, 50, 100, 100)
+rect_color = BLUE
+
+# ---- Game loop ----
+
+while running:
+    
+    # ---- input ----
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            running = False
+        elif event.type == pygame.MOUSEMOTION:           
+            if rectangle.collidepoint(event.pos):
+                rect_color = GREEN
+            else:         
+                rect_color = BLUE
+    
+    # ---- update ---- 
+
+    # ---- draw ----
+    screen.fill(WHITE)
+    pygame.draw.rect(screen, rect_color, rectangle)
+    pygame.display.flip()
+
+# ---- Quit ----
+
+pygame.quit()
+
+```
+
+**Explanation:**
+
+`rect.collidepoint((x,y)) -> bool` returns True if point is within rect  
+
+**more**  
+* pygame documentation rect https://www.pygame.org/docs/ref/rect.html
+
+### rectangle - rectangle
+
+
+```python
+
+```
+
+`rect.colliderect(Rect) -> bool` returns True if rectangles overlap  
+`rect.collidelist(list) -> index` returns index of the *first* rectangle that overlaps; -1 if nothing is found
+`rect.collidelistall(list) -> indices` returns indexes of all rectangles that overlap
+
+
+### rectangle - line
+
+#### Task: detecting a line in a rectangle
+
+
+```python
+%gui qt
+import pygame
+
+# ---- Initialize ----
+
+pygame.init()
+
+SIZE = WIDTH, HEIGHT = 320, 240
+WHITE = 255, 255, 255
+BLACK = 0, 0, 0
+BLUE = 0, 0, 255
+GRAY = 127, 127, 127
+GREEN = 0, 255, 0
+
+running = True
+screen = pygame.display.set_mode(SIZE)
+
+clock = pygame.time.Clock() #create clock object
+
+FRAMES_PER_SECOND = 30      #who many pictures per second should pygame generate?
+
+x_position = 60             #position of the blue rectangel
+PIXELS_PER_SECOND = 40      #how many pixels per second should the rectangele be moved?
+
+start_pos = (120,0)
+end_pos = (120,200)
+
+# ---- Game loop ----
+
+while running:
+    
+    # ---- input ----
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            running = False
+    
+    # ---- update ---- 
+    delta_time = clock.tick(FRAMES_PER_SECOND)     # time since last frame
+    
+    x_position = x_position + delta_time/1000 * PIXELS_PER_SECOND #next position of the rectanel
+ 
+    if x_position > WIDTH: #rectangele vanishes right start from left again
+        x_position = 0
+    
+    # ---- draw ----
+    screen.fill(BLACK)
+    rect = pygame.Rect(int(x_position), 30, 60, 60)
+    
+    clip = rect.clipline(start_pos,end_pos)
+    
+    if len(clip) > 0:
+        pygame.draw.rect(screen, GRAY, rect)
+        pygame.draw.line(screen, WHITE, start_pos, end_pos, width=1)
+        pygame.draw.line(screen, GREEN, clip[0], clip[1])
+    else:
+        pygame.draw.rect(screen, BLUE, rect)
+        pygame.draw.line(screen, WHITE, start_pos, end_pos, width=1)
+    
+    
+    pygame.display.flip()
+
+# ---- Quit ----
+
+pygame.quit()
+```
+
+    pygame 2.1.1 (SDL 2.0.18, Python 3.9.7)
+    Hello from the pygame community. https://www.pygame.org/contribute.html
+
+
+`clipline(x1, y1, x2, y2) -> ((cx1, cy1), (cx2, cy2))` ..
+returns the coordinates of a line that in rectangle; an empty tuble when line complete out rectangle
+
+### pixel - pixel
+
+
+```python
+%gui qt
+import pygame
+pygame.init()
+
+SIZE = WIDTH, HEIGHT = 320, 240
+BLACK = 0, 0, 0
+
+running = True
+clock = pygame.time.Clock()
+fps = 30
+screen = pygame.display.set_mode(SIZE)
+
+ball = pygame.image.load("Freddy.png")
+ballrect = ball.get_rect()
+ballrect.center = (200,100)
+ballmask = pygame.mask.from_surface(ball)
+
+
+ball2 = pygame.image.load("Freddy.png")
+ballrect2 = ball2.get_rect()
+ballmask2 = pygame.mask.from_surface(ball2)
+
+position = pygame.Vector2(100, 100)
+velocity = pygame.Vector2(10,0)
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            running = False
+
+    delta_time = clock.tick(fps) / 1000.0
+    position = position + velocity * delta_time
+    ballrect2.center = position
+    
+    offset_x = ballrect2.left - ballrect.left
+    offset_y = ballrect2.top - ballrect.top
+    
+    if ballmask.overlap(ballmask2, (offset_x, offset_y)) != None:
+        print('collision')
+        
+    screen.fill(BLACK)
+    screen.blit(ball, ballrect)
+    screen.blit(ball2, ballrect2)
+    pygame.display.flip()
+
+pygame.quit()
+```
+
+
+```python
+pygame.quit()
+```
+
+`from_surface(Surface) -> Mask`.. Creates a *Mask* object from the *Surface* by setting all the opaque pixels and not setting the transparent pixels  
+`overlap(othermask, offset) -> (x, y)`.. Returns the first point of intersection encountered between this mask and *othermask*. *None* if there is no overlaping. *offset* is the distance between the two masks.
+
+### sprite - sprite
+
+
+```python
+
+```
+
+**more**  
+* Collision Detection in PyGame LMU 2017 https://www.medien.ifi.lmu.de/lehre/ss17/mmp/uebung/uebung7/mmp_uebung_7_ss17.pdf
+* pygame documentation rect https://www.pygame.org/docs/ref/rect.html
+* pygame documentation sprite https://www.pygame.org/docs/ref/sprite.html
+* pygame documentation mask https://www.pygame.org/docs/ref/mask.html
+
+
+```python
+
+```
+
+## opengl
+
+### start
+
+#### Task: using OpenGl with pygame
+
+**Solution:**
+
+install Python packages **numpy**,**PyOpenGL** and **PyOpenGL_accelerate**
+
+`
+pip install numpy PyOpenGL PyOpenGL_accelerate
+`
+
+
+```python
+%gui qt
+import pygame
+
+from OpenGL.GL import *
+from OpenGL.GLU import *
+
+verticies = ((1, -1, -1),(1, 1, -1),(-1, 1, -1),(-1, -1, -1),
+             (1, -1, 1),(1, 1, 1),(-1, -1, 1),(-1, 1, 1))
+
+edges = ((0,1),(0,3),(0,4),(2,1),
+         (2,3),(2,7),(6,3),(6,4),
+         (6,7),(5,1),(5,4),(5,7))
+
+# ---- Initialize ----
+
+pygame.init()
+
+SIZE = WIDTH, HEIGHT = 640, 480
+BLACK = 0, 0, 0
+BLUE = 0, 0, 255
+
+#pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS,1) #antialiasing
+#pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLESAMPLES,4)
+
+#pygame.display.gl_set_attribute(pygame.GL_CONTEXT_PROFILE_MASK, #compatibility
+#                                pygame.GL_CONTEXT_PROFILE_CORE)
+
+running = True
+screen = pygame.display.set_mode(SIZE,pygame.DOUBLEBUF | pygame.OPENGL)
+
+gluPerspective(45, (WIDTH/HEIGHT), 0.1, 50)
+glTranslatef(0.0,0.0,-5)
+
+# ---- Game loop ----
+
+while running:
+    
+    # ---- input ----
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            running = False
+    
+    # ---- update ---- 
+    
+    # ---- draw ----
+    glRotatef(1, 3, 1, 1)
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+    
+    glBegin(GL_LINES)
+    for edge in edges:
+        for vertex in edge:
+            glVertex3fv(verticies[vertex])
+    glEnd()
+    
+    pygame.display.flip()
+    pygame.time.wait(10)
+
+# ---- Quit ----
+
+pygame.quit()
+```
 
 
 ```python
