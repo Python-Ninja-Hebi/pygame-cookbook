@@ -415,6 +415,84 @@ With
 
 ## text
 
+#### Task: draw text
+
+**Solution:**
+
+
+```python
+%gui qt
+import pygame
+
+running = True
+
+WHITE = (255,255,255)
+BLUE = (0,0,255)
+
+pygame.init()
+screen = pygame.display.set_mode((640, 340))
+
+sysfont = pygame.font.get_default_font()
+print(sysfont)
+
+font = pygame.font.SysFont(None, 24)
+
+pygame.display.flip()
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            running = False
+    
+    screen.fill(WHITE)
+    
+    img = font.render("text", True, BLUE)
+    rect = img.get_rect()
+    rect.midtop = (40,40)
+    screen.blit(img, rect)
+    
+    pygame.display.flip()
+            
+pygame.quit()
+```
+
+    pygame 2.1.2 (SDL 2.0.18, Python 3.9.16)
+    Hello from the pygame community. https://www.pygame.org/contribute.html
+    freesansbold.ttf
+
+
+**Explanation:**
+
+`get_default_font() -> str` .. returns the name of the default font
+
+
+`SysFont(name, size) -> Font` .. create a Font object from the system fonts
+
+`name`.. name of the font, can be None
+
+`size`.. font size
+
+
+`Font(filename, size) -> Font`.. create Font from file
+
+`filename`.. file name of the font
+
+`size`.. font size
+
+
+`render(text, antialias, color, background=None) -> Surface` .. creates a new surface with text
+
+`text`.. as string  
+`antialias`.. if True than with antialias
+
+
+The text can only be a single line. The Surface will be of the dimensions required to hold the text.
+
+
+```python
+
+```
+
 ## transparent
 
 ## mouse
