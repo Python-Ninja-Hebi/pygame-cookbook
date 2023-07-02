@@ -18,7 +18,7 @@ Have fun.
 
 Hebi, on the way to Python Ninja
 
-`Edition 0.3, February 2023`
+`Edition 0.32, July 2023`
 
 ## install pygame
 
@@ -494,6 +494,171 @@ The text can only be a single line. The Surface will be of the dimensions requir
 ```
 
 ## transparent
+
+#### Task: draw a transparent surface
+
+**Solution:**
+
+
+```python
+%gui qt
+import pygame
+
+# ---- Initialize ----
+
+pygame.init()
+
+SIZE = WIDTH, HEIGHT = 640, 340
+
+running = True
+screen = pygame.display.set_mode(SIZE)
+
+WHITE = (255,255,255)
+BLUE = (0,0,255)
+GREY_1 = (160, 160, 160)
+GREY_2 = (192, 192, 192)
+
+TILE_SIZE = 24
+background = pygame.Surface(SIZE) # background image
+
+for x in range(0,WIDTH//TILE_SIZE+1):
+    for y in range(0,HEIGHT//TILE_SIZE+1):
+        color = GREY_1
+        if (x+y) % 2 == 0:
+            color = GREY_2
+        pygame.draw.rect(background, color, (x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE))
+
+# ---- Game loop ----
+
+while running:
+    
+    # ---- input ----
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            running = False
+    
+    # ---- update ---- 
+    
+    # ---- draw ----
+    screen.blit(background, (0, 0))
+    
+    surface = pygame.Surface((200,200))  # new surface
+    surface.set_alpha(128)               # set alpha
+    surface.fill(BLUE)             
+    
+    screen.blit(surface, (0,0))
+    
+    pygame.display.flip()
+
+# ---- Quit ----
+
+pygame.quit()
+```
+
+
+    ---------------------------------------------------------------------------
+
+    KeyboardInterrupt                         Traceback (most recent call last)
+
+    Cell In[5], line 48
+         44     surface.fill(BLUE)             
+         46     screen.blit(surface, (0,0))
+    ---> 48     pygame.display.flip()
+         50 # ---- Quit ----
+         52 pygame.quit()
+
+
+    KeyboardInterrupt: 
+
+
+If you want a **transparent** image (surface) you have to that the so called **alpha value** of the
+surface. Use the set_alpha method for this.  
+
+If the alpha value is 0 it's totaly transparent. You see nothing.
+If the value is 255 it's not transpartent.
+
+`set_alpha(value) -> None` .. set alpha value of surface
+
+<img src="img/transparent_surface.png" width="560" align="left"><br><br><br><br><br><br><br><br><br><br>
+
+#### Task: make every pixel of an image transparent
+
+**Solution:**
+
+
+```python
+%gui qt
+import pygame
+
+# ---- Initialize ----
+
+pygame.init()
+
+SIZE = WIDTH, HEIGHT = 320, 140
+
+running = True
+screen = pygame.display.set_mode(SIZE)
+
+WHITE = (255,255,255)
+BLUE = (0,0,255)
+GREY_1 = (160, 160, 160)
+GREY_2 = (192, 192, 192)
+
+TILE_SIZE = 24
+background = pygame.Surface(SIZE) # background image
+
+for x in range(0,WIDTH//TILE_SIZE+1):
+    for y in range(0,HEIGHT//TILE_SIZE+1):
+        color = GREY_1
+        if (x+y) % 2 == 0:
+            color = GREY_2
+        pygame.draw.rect(background, color, (x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE))
+
+# ---- Game loop ----
+
+while running:
+    
+    # ---- input ----
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            running = False
+    
+    # ---- update ---- 
+    
+    # ---- draw ----
+    screen.blit(background, (0, 0))
+    
+    RADIUS = 50
+    
+    surface = pygame.Surface((100,100),pygame.SRCALPHA)  # new surface per pixel alpha
+    pygame.draw.circle(surface, (0,0,255,128), (RADIUS, RADIUS), RADIUS) # with alpha
+    screen.blit(surface,(0,0))
+    
+    surface = pygame.Surface((100,100),pygame.SRCALPHA)  # new surface per pixel alpha
+    pygame.draw.circle(surface, (0,0,255,64), (RADIUS, RADIUS), RADIUS) # with alpha
+    screen.blit(surface,(75,0))
+    
+    pygame.display.flip()
+
+# ---- Quit ----
+
+pygame.quit()
+```
+
+`surface = pygame.Surface((100,100),pygame.SRCALPHA)`
+
+If you want to set an alpha value (transparence) separatly for every pixel to have
+to use **pygame.SRCALPHA** when creating a surface. Now pygame knows that you wants
+to use alpha values.
+
+`pygame.draw.circle(surface, (0,0,255,128), (RADIUS, RADIUS), RADIUS)`
+
+In the color value you can now add the alpha value (128), too.
+
+<img src="img/transparent_pixel.png" width="560" align="left"><br><br><br><br><br><br><br><br><br><br>
+
+**more** 
+* Draw a transparent rectangle in pygame https://stackoverflow.com/questions/6339057/draw-a-transparent-rectangle-in-pygame
 
 ## mouse
 
